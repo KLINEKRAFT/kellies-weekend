@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Waldorf Astoria Park City — Wasatch peaks at first light">
+  <defs>
+    <linearGradient id="pc-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d4d8dc"/>
+      <stop offset=".4" stop-color="#e8c8a8"/>
+      <stop offset=".7" stop-color="#d4a888"/>
+      <stop offset="1" stop-color="#8a7868"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#pc-sky)"/>
+  <!-- sun -->
+  <circle cx="600" cy="280" r="46" fill="#f8e8c8" opacity=".7"/>
+  <circle cx="600" cy="280" r="100" fill="#f8e8c8" opacity=".15"/>
+  <!-- distant peaks (faded) -->
+  <path d="M0 580 L80 480 L150 540 L220 460 L300 520 L380 440 L460 510 L540 450 L620 500 L700 460 L800 520 L800 700 L0 700Z" fill="#7a8090" opacity=".6"/>
+  <!-- mid peaks -->
+  <path d="M0 640 L60 540 L130 600 L210 500 L290 580 L380 480 L460 570 L550 490 L640 560 L720 500 L800 580 L800 760 L0 760Z" fill="#5a6878" opacity=".85"/>
+  <!-- snow caps mid -->
+  <g fill="#f8f4ec" opacity=".95">
+    <path d="M50 555 L60 540 L80 555 Q70 558 50 555Z"/>
+    <path d="M195 520 L210 500 L228 520 Q215 524 195 520Z"/>
+    <path d="M362 500 L380 480 L398 500 Q380 506 362 500Z"/>
+    <path d="M540 510 L550 490 L568 510 Q555 514 540 510Z"/>
+    <path d="M708 525 L720 500 L736 520 Q722 530 708 525Z"/>
+  </g>
+  <!-- foreground peaks -->
+  <path d="M0 760 L100 600 L220 740 L320 580 L450 720 L580 600 L700 700 L800 640 L800 1000 L0 1000Z" fill="#3a4452"/>
+  <!-- snow caps foreground -->
+  <g fill="#f8f4ec">
+    <path d="M82 624 L100 600 L120 626 Q100 632 82 624Z"/>
+    <path d="M300 612 L320 580 L342 614 Q320 622 300 612Z"/>
+    <path d="M560 628 L580 600 L600 626 Q580 634 560 628Z"/>
+  </g>
+  <!-- treeline -->
+  <g fill="#1a2028" opacity=".7">
+    <path d="M0 820 L20 770 L30 820Z M30 820 L52 760 L62 820Z M65 820 L88 750 L100 820Z"/>
+    <path d="M120 830 L140 780 L150 830Z M155 830 L175 770 L185 830Z M200 835 L220 770 L232 835Z"/>
+    <path d="M250 840 L270 780 L282 840Z M295 845 L315 778 L328 845Z M345 850 L370 775 L385 850Z"/>
+    <path d="M420 860 L440 790 L455 860Z M475 870 L500 790 L515 870Z M540 880 L560 800 L575 880Z"/>
+    <path d="M610 890 L630 805 L645 890Z M670 900 L690 810 L708 900Z M730 920 L750 815 L768 920Z"/>
+  </g>
+  <!-- lodge silhouette -->
+  <g transform="translate(360 870)">
+    <rect x="0" y="0" width="180" height="80" fill="#1a1a1a"/>
+    <path d="M-10 0 L90 -50 L190 0 Z" fill="#0a0a0a"/>
+    <rect x="20" y="20" width="14" height="20" fill="#f8c878"/>
+    <rect x="50" y="20" width="14" height="20" fill="#f8c878"/>
+    <rect x="80" y="20" width="14" height="20" fill="#f8c878"/>
+    <rect x="115" y="20" width="14" height="20" fill="#f8c878"/>
+    <rect x="148" y="20" width="14" height="20" fill="#f8c878"/>
+  </g>
+</svg>
