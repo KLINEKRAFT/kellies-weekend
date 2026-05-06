@@ -258,7 +258,7 @@ section.dest{
 .poster .hero{
   position:relative;
   width:100%;
-  aspect-ratio:4/3;
+  aspect-ratio:3/2;
   overflow:hidden;
   background:var(--sand);
   flex:0 0 auto;
@@ -270,9 +270,10 @@ section.dest{
   height:100%;
   object-fit:cover;
   display:block;
-  transition:transform 1.4s cubic-bezier(.2,.8,.2,1),opacity .35s ease;
+  transition:opacity .4s ease;
 }
-.poster:hover .hero img{transform:scale(1.03)}
+.poster .hero img.swap-out{opacity:0}
+.poster:hover .hero img:not(.swap-out){transform:scale(1.02);transition:transform 1.4s cubic-bezier(.2,.8,.2,1),opacity .4s ease}
 .poster .thumbs{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(0,1fr));
@@ -561,8 +562,8 @@ footer .bottom .klk{
 
   .property{margin-bottom:72px;gap:24px}
 
-  /* taller hero, easier-to-scan thumbs that swipe horizontally */
-  .poster .hero{aspect-ratio:4/5}
+  /* keep the hero horizontal on phone too */
+  .poster .hero{aspect-ratio:3/2}
   .poster .tag{top:12px;left:12px;padding:6px 11px;font-size:9px}
   .poster .thumbs{
     height:72px;
@@ -1236,20 +1237,63 @@ document.querySelectorAll('.property,.saturday,.logistics,.dest-head').forEach(e
   observer.observe(el);
 });
 
-// click a thumbnail to swap it into the hero
+// click a thumbnail to slide a new photo into the hero
 document.querySelectorAll('.poster').forEach(poster=>{
-  const heroImg=poster.querySelector('.hero img');
-  if(!heroImg)return;
+  const hero=poster.querySelector('.hero');
+  const heroImg=hero&&hero.querySelector('img');
+  if(!hero||!heroImg)return;
+  let busy=false;
+  const swap=(src,alt)=>{
+    if(busy||heroImg.src.endsWith(src)||heroImg.src===src)return;
+    busy=true;
+    // preload then crossfade
+    const next=new Image();
+    next.onload=()=>{
+      const incoming=heroImg.cloneNode();
+      incoming.src=src;
+      incoming.alt=alt||'';
+      incoming.style.opacity='0';
+      hero.appendChild(incoming);
+      requestAnimationFrame(()=>{
+        incoming.style.opacity='1';
+      });
+      setTimeout(()=>{
+        heroImg.src=src;
+        heroImg.alt=alt||'';
+        heroImg.style.opacity='1';
+        if(incoming.parentNode)incoming.parentNode.removeChild(incoming);
+        busy=false;
+      },420);
+    };
+    next.onerror=()=>{busy=false};
+    next.src=src;
+  };
   poster.querySelectorAll('.thumb').forEach(thumb=>{
     thumb.addEventListener('click',()=>{
       const tImg=thumb.querySelector('img');
       if(!tImg)return;
-      heroImg.src=tImg.src;
-      heroImg.alt=tImg.alt;
+      swap(tImg.src,tImg.alt);
       poster.querySelectorAll('.thumb').forEach(t=>t.classList.remove('active'));
       thumb.classList.add('active');
     });
   });
+
+  // swipe the hero left/right on touch devices
+  let sx=0,sy=0,touching=false;
+  hero.addEventListener('touchstart',e=>{
+    sx=e.touches[0].clientX;sy=e.touches[0].clientY;touching=true;
+  },{passive:true});
+  hero.addEventListener('touchend',e=>{
+    if(!touching)return;touching=false;
+    const dx=e.changedTouches[0].clientX-sx;
+    const dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)<40||Math.abs(dx)<Math.abs(dy))return;
+    const thumbs=Array.from(poster.querySelectorAll('.thumb'));
+    const i=thumbs.findIndex(t=>t.classList.contains('active'));
+    if(i<0)return;
+    const next=dx<0?thumbs[i+1]:thumbs[i-1];
+    if(next)next.click();
+  },{passive:true});
 });
 
 // lazy-load thumbs (hero loads eagerly)
