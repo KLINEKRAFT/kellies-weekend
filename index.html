@@ -247,47 +247,55 @@ section.dest{
 }
 .property:last-of-type{margin-bottom:0}
 
-/* poster */
+/* poster — hero image + thumbnail strip */
 .poster{
   position:relative;
   aspect-ratio:4/5;
   overflow:hidden;
   background:var(--sand);
   border:1px solid var(--line);
-}
-.poster > img.poster-fallback{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  transition:transform 1.4s cubic-bezier(.2,.8,.2,1);
-}
-.poster:hover > img.poster-fallback{transform:scale(1.03)}
-
-/* photo gallery — appears when photos/<slug>/ contains JPGs */
-.poster .frames{
-  position:absolute;
-  inset:0;
   display:grid;
+  grid-template-rows:1fr 22%;
   gap:6px;
-  background:var(--warm-white);
 }
-.poster.has-photos-1 .frames{grid-template-columns:1fr;grid-template-rows:1fr}
-.poster.has-photos-2 .frames{grid-template-columns:1fr 1fr;grid-template-rows:1fr}
-.poster.has-photos-3 .frames{grid-template-columns:repeat(3,1fr);grid-template-rows:1fr}
-.poster.has-photos-4 .frames{grid-template-columns:repeat(3,1fr);grid-template-rows:3fr 1fr}
-.poster.has-photos-4 .frames .frame:nth-child(1){grid-column:1/4}
-.poster.has-photos-5 .frames{grid-template-columns:repeat(4,1fr);grid-template-rows:3fr 1fr}
-.poster.has-photos-5 .frames .frame:nth-child(1){grid-column:1/5}
-.poster .frame{position:relative;overflow:hidden;background:var(--sand)}
-.poster .frame img{
+.poster .hero{
+  position:relative;
+  overflow:hidden;
+  background:var(--sand);
+  min-height:0;
+}
+.poster .hero img{
   width:100%;
   height:100%;
   object-fit:cover;
   display:block;
-  transition:transform 1.4s cubic-bezier(.2,.8,.2,1);
+  transition:transform 1.4s cubic-bezier(.2,.8,.2,1),opacity .35s ease;
 }
-.poster .frame:hover img{transform:scale(1.04)}
+.poster:hover .hero img{transform:scale(1.03)}
+.poster.no-thumbs{grid-template-rows:1fr}
+.poster .thumbs{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(0,1fr));
+  gap:6px;
+  min-height:0;
+}
+.poster .thumb{
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  background:var(--sand);
+  transition:opacity .25s ease,outline-color .25s ease;
+  outline:0 solid transparent;
+  outline-offset:-2px;
+}
+.poster .thumb:hover{opacity:.85}
+.poster .thumb.active{outline:2px solid var(--warm-white)}
+.poster .thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
 .poster .tag{
   position:absolute;
   top:20px;
@@ -299,20 +307,7 @@ section.dest{
   letter-spacing:.2em;
   text-transform:uppercase;
   color:var(--ink);
-  z-index:2;
-}
-.poster .credit{
-  position:absolute;
-  bottom:16px;
-  right:18px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:9px;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-  color:var(--warm-white);
-  opacity:.7;
-  mix-blend-mode:difference;
-  z-index:2;
+  z-index:3;
 }
 
 .property .content{padding-top:8px}
@@ -623,11 +618,18 @@ footer .bottom .klk{
 
   <!-- TEN THOUSAND WAVES -->
   <article class="property">
-    <div class="poster" data-slug="ten-thousand-waves">
+    <div class="poster">
       <span class="tag">Property A</span>
-      <img class="poster-fallback" alt="Editorial illustration of Ten Thousand Waves: onsen ripples beneath the moon, framed by piñon pine" src="art/ten-thousand-waves.svg">
-      <div class="frames" hidden></div>
-      <span class="credit">Editorial Plate</span>
+      <div class="hero"><img alt="Ten Thousand Waves" src="assets/hotels/ten-thousand-waves-santa-fe/ten-thousand-waves-santa-fe-photo-01.jpg"></div>
+      <div class="thumbs">
+        <div class="thumb active"><img alt="Ten Thousand Waves photo 1" src="assets/hotels/ten-thousand-waves-santa-fe/ten-thousand-waves-santa-fe-photo-01.jpg"></div>
+        <div class="thumb"><img alt="Ten Thousand Waves photo 2" src="assets/hotels/ten-thousand-waves-santa-fe/ten-thousand-waves-santa-fe-photo-02.jpg"></div>
+        <div class="thumb"><img alt="Ten Thousand Waves photo 3" src="assets/hotels/ten-thousand-waves-santa-fe/ten-thousand-waves-santa-fe-photo-03.jpg"></div>
+        <div class="thumb"><img alt="Ten Thousand Waves photo 4" src="assets/hotels/ten-thousand-waves-santa-fe/ten-thousand-waves-santa-fe-photo-04.jpg"></div>
+        <div class="thumb"><img alt="Ten Thousand Waves photo 5" src="assets/hotels/ten-thousand-waves-santa-fe/ten-thousand-waves-santa-fe-photo-05.jpg"></div>
+        <div class="thumb"><img alt="Ten Thousand Waves photo 6" src="assets/hotels/ten-thousand-waves-santa-fe/ten-thousand-waves-santa-fe-photo-06.jpg"></div>
+        <div class="thumb"><img alt="Ten Thousand Waves photo 7" src="assets/hotels/ten-thousand-waves-santa-fe/ten-thousand-waves-santa-fe-photo-07.jpg"></div>
+      </div>
     </div>
     <div class="content">
       <div class="num">Stay 01</div>
@@ -660,11 +662,19 @@ footer .bottom .klk{
 
   <!-- FOUR SEASONS -->
   <article class="property">
-    <div class="poster" data-slug="four-seasons-rancho">
+    <div class="poster">
       <span class="tag">Property B</span>
-      <img class="poster-fallback" alt="Editorial illustration of Four Seasons Rancho Encantado: high-desert mesa at dusk with adobe casita and piñon trees" src="art/four-seasons-rancho.svg">
-      <div class="frames" hidden></div>
-      <span class="credit">Editorial Plate</span>
+      <div class="hero"><img alt="Four Seasons Rancho Encantado" src="assets/hotels/four-seasons-santa-fe/four-seasons-santa-fe-photo-01.jpg"></div>
+      <div class="thumbs">
+        <div class="thumb active"><img alt="Four Seasons photo 1" src="assets/hotels/four-seasons-santa-fe/four-seasons-santa-fe-photo-01.jpg"></div>
+        <div class="thumb"><img alt="Four Seasons photo 2" src="assets/hotels/four-seasons-santa-fe/four-seasons-santa-fe-photo-02.jpg"></div>
+        <div class="thumb"><img alt="Four Seasons photo 3" src="assets/hotels/four-seasons-santa-fe/four-seasons-santa-fe-photo-03.jpg"></div>
+        <div class="thumb"><img alt="Four Seasons photo 4" src="assets/hotels/four-seasons-santa-fe/four-seasons-santa-fe-photo-04.jpg"></div>
+        <div class="thumb"><img alt="Four Seasons photo 5" src="assets/hotels/four-seasons-santa-fe/four-seasons-santa-fe-photo-05.jpg"></div>
+        <div class="thumb"><img alt="Four Seasons photo 6" src="assets/hotels/four-seasons-santa-fe/four-seasons-santa-fe-photo-06.jpg"></div>
+        <div class="thumb"><img alt="Four Seasons photo 7" src="assets/hotels/four-seasons-santa-fe/four-seasons-santa-fe-photo-07.jpg"></div>
+        <div class="thumb"><img alt="Four Seasons photo 8" src="assets/hotels/four-seasons-santa-fe/four-seasons-santa-fe-photo-08.jpg"></div>
+      </div>
     </div>
     <div class="content">
       <div class="num">Stay 02</div>
@@ -697,11 +707,16 @@ footer .bottom .klk{
 
   <!-- INN OF THE FIVE GRACES -->
   <article class="property">
-    <div class="poster" data-slug="inn-five-graces">
+    <div class="poster">
       <span class="tag">Property C</span>
-      <img class="poster-fallback" alt="Editorial illustration of Inn of the Five Graces: adobe archway, hanging lantern, mosaic tile band" src="art/inn-five-graces.svg">
-      <div class="frames" hidden></div>
-      <span class="credit">Editorial Plate</span>
+      <div class="hero"><img alt="Inn of the Five Graces" src="assets/hotels/inn-of-the-five-graces-santa-fe/inn-of-the-five-graces-santa-fe-photo-01.jpg"></div>
+      <div class="thumbs">
+        <div class="thumb active"><img alt="Inn of the Five Graces photo 1" src="assets/hotels/inn-of-the-five-graces-santa-fe/inn-of-the-five-graces-santa-fe-photo-01.jpg"></div>
+        <div class="thumb"><img alt="Inn of the Five Graces photo 2" src="assets/hotels/inn-of-the-five-graces-santa-fe/inn-of-the-five-graces-santa-fe-photo-02.jpg"></div>
+        <div class="thumb"><img alt="Inn of the Five Graces photo 3" src="assets/hotels/inn-of-the-five-graces-santa-fe/inn-of-the-five-graces-santa-fe-photo-03.jpg"></div>
+        <div class="thumb"><img alt="Inn of the Five Graces photo 4" src="assets/hotels/inn-of-the-five-graces-santa-fe/inn-of-the-five-graces-santa-fe-photo-04.jpg"></div>
+        <div class="thumb"><img alt="Inn of the Five Graces photo 5" src="assets/hotels/inn-of-the-five-graces-santa-fe/inn-of-the-five-graces-santa-fe-photo-05.jpg"></div>
+      </div>
     </div>
     <div class="content">
       <div class="num">Stay 03</div>
@@ -734,11 +749,15 @@ footer .bottom .klk{
 
   <!-- BISHOP'S LODGE -->
   <article class="property">
-    <div class="poster" data-slug="bishops-lodge">
+    <div class="poster">
       <span class="tag">Property D</span>
-      <img class="poster-fallback" alt="Editorial illustration of Bishop's Lodge: historic chapel in piñon foothills with the Sangre de Cristo ridge beyond" src="art/bishops-lodge.svg">
-      <div class="frames" hidden></div>
-      <span class="credit">Editorial Plate</span>
+      <div class="hero"><img alt="Bishop's Lodge" src="assets/hotels/bishops-lodge-santa-fe/bishops-lodge-santa-fe-photo-01.webp"></div>
+      <div class="thumbs">
+        <div class="thumb active"><img alt="Bishop's Lodge photo 1" src="assets/hotels/bishops-lodge-santa-fe/bishops-lodge-santa-fe-photo-01.webp"></div>
+        <div class="thumb"><img alt="Bishop's Lodge photo 2" src="assets/hotels/bishops-lodge-santa-fe/bishops-lodge-santa-fe-photo-02.webp"></div>
+        <div class="thumb"><img alt="Bishop's Lodge photo 3" src="assets/hotels/bishops-lodge-santa-fe/bishops-lodge-santa-fe-photo-03.avif"></div>
+        <div class="thumb"><img alt="Bishop's Lodge photo 4" src="assets/hotels/bishops-lodge-santa-fe/bishops-lodge-santa-fe-photo-04.webp"></div>
+      </div>
     </div>
     <div class="content">
       <div class="num">Stay 04</div>
@@ -858,11 +877,17 @@ footer .bottom .klk{
 
   <!-- WALDORF ASTORIA PARK CITY -->
   <article class="property">
-    <div class="poster" data-slug="waldorf-park-city">
+    <div class="poster">
       <span class="tag">Property A</span>
-      <img class="poster-fallback" alt="Editorial illustration of Waldorf Astoria Park City: layered Wasatch peaks at first light, snow-capped, lit lodge windows" src="art/waldorf-park-city.svg">
-      <div class="frames" hidden></div>
-      <span class="credit">Editorial Plate</span>
+      <div class="hero"><img alt="Waldorf Astoria Park City" src="assets/hotels/waldorf-astoria-park-city/waldorf-astoria-park-city-photo-01.jpg"></div>
+      <div class="thumbs">
+        <div class="thumb active"><img alt="Waldorf Astoria Park City photo 1" src="assets/hotels/waldorf-astoria-park-city/waldorf-astoria-park-city-photo-01.jpg"></div>
+        <div class="thumb"><img alt="Waldorf Astoria Park City photo 2" src="assets/hotels/waldorf-astoria-park-city/waldorf-astoria-park-city-photo-02.jpg"></div>
+        <div class="thumb"><img alt="Waldorf Astoria Park City photo 3" src="assets/hotels/waldorf-astoria-park-city/waldorf-astoria-park-city-photo-03.jpg"></div>
+        <div class="thumb"><img alt="Waldorf Astoria Park City photo 4" src="assets/hotels/waldorf-astoria-park-city/waldorf-astoria-park-city-photo-04.jpg"></div>
+        <div class="thumb"><img alt="Waldorf Astoria Park City photo 5" src="assets/hotels/waldorf-astoria-park-city/waldorf-astoria-park-city-photo-05.jpg"></div>
+        <div class="thumb"><img alt="Waldorf Astoria Park City photo 6" src="assets/hotels/waldorf-astoria-park-city/waldorf-astoria-park-city-photo-06.jpg"></div>
+      </div>
     </div>
     <div class="content">
       <div class="num">Stay 01</div>
@@ -982,11 +1007,16 @@ footer .bottom .klk{
 
   <!-- WYNN -->
   <article class="property">
-    <div class="poster" data-slug="wynn-las-vegas">
+    <div class="poster">
       <span class="tag">Property A</span>
-      <img class="poster-fallback" alt="Editorial illustration of Wynn Las Vegas: golden tower against a dusk sky, lit windows, distant Strip" src="art/wynn-las-vegas.svg">
-      <div class="frames" hidden></div>
-      <span class="credit">Editorial Plate</span>
+      <div class="hero"><img alt="Wynn Las Vegas" src="assets/hotels/wynn-las-vegas/wynn-las-vegas-photo-01.jpg"></div>
+      <div class="thumbs">
+        <div class="thumb active"><img alt="Wynn Las Vegas photo 1" src="assets/hotels/wynn-las-vegas/wynn-las-vegas-photo-01.jpg"></div>
+        <div class="thumb"><img alt="Wynn Las Vegas photo 2" src="assets/hotels/wynn-las-vegas/wynn-las-vegas-photo-02.jpg"></div>
+        <div class="thumb"><img alt="Wynn Las Vegas photo 3" src="assets/hotels/wynn-las-vegas/wynn-las-vegas-photo-03.jpg"></div>
+        <div class="thumb"><img alt="Wynn Las Vegas photo 4" src="assets/hotels/wynn-las-vegas/wynn-las-vegas-photo-04.jpg"></div>
+        <div class="thumb"><img alt="Wynn Las Vegas photo 5" src="assets/hotels/wynn-las-vegas/wynn-las-vegas-photo-05.jpg"></div>
+      </div>
     </div>
     <div class="content">
       <div class="num">Stay 01</div>
@@ -1019,11 +1049,19 @@ footer .bottom .klk{
 
   <!-- WALDORF LAS VEGAS -->
   <article class="property">
-    <div class="poster" data-slug="waldorf-las-vegas">
+    <div class="poster">
       <span class="tag">Property B</span>
-      <img class="poster-fallback" alt="Editorial illustration of Waldorf Astoria Las Vegas: panoramic Strip skyline at dusk seen from a high-rise suite window" src="art/waldorf-las-vegas.svg">
-      <div class="frames" hidden></div>
-      <span class="credit">Editorial Plate</span>
+      <div class="hero"><img alt="Waldorf Astoria Las Vegas" src="assets/hotels/waldorf-astoria-las-vegas/waldorf-astoria-las-vegas-photo-01.jpg"></div>
+      <div class="thumbs">
+        <div class="thumb active"><img alt="Waldorf Astoria Las Vegas photo 1" src="assets/hotels/waldorf-astoria-las-vegas/waldorf-astoria-las-vegas-photo-01.jpg"></div>
+        <div class="thumb"><img alt="Waldorf Astoria Las Vegas photo 2" src="assets/hotels/waldorf-astoria-las-vegas/waldorf-astoria-las-vegas-photo-02.jpg"></div>
+        <div class="thumb"><img alt="Waldorf Astoria Las Vegas photo 3" src="assets/hotels/waldorf-astoria-las-vegas/waldorf-astoria-las-vegas-photo-03.jpg"></div>
+        <div class="thumb"><img alt="Waldorf Astoria Las Vegas photo 4" src="assets/hotels/waldorf-astoria-las-vegas/waldorf-astoria-las-vegas-photo-04.jpg"></div>
+        <div class="thumb"><img alt="Waldorf Astoria Las Vegas photo 5" src="assets/hotels/waldorf-astoria-las-vegas/waldorf-astoria-las-vegas-photo-05.jpg"></div>
+        <div class="thumb"><img alt="Waldorf Astoria Las Vegas photo 6" src="assets/hotels/waldorf-astoria-las-vegas/waldorf-astoria-las-vegas-photo-06.jpg"></div>
+        <div class="thumb"><img alt="Waldorf Astoria Las Vegas photo 7" src="assets/hotels/waldorf-astoria-las-vegas/waldorf-astoria-las-vegas-photo-07.jpg"></div>
+        <div class="thumb"><img alt="Waldorf Astoria Las Vegas photo 8" src="assets/hotels/waldorf-astoria-las-vegas/waldorf-astoria-las-vegas-photo-08.jpg"></div>
+      </div>
     </div>
     <div class="content">
       <div class="num">Stay 02</div>
@@ -1138,38 +1176,24 @@ document.querySelectorAll('.property,.saturday,.logistics,.dest-head').forEach(e
   observer.observe(el);
 });
 
-// photo discovery — replaces SVG poster with photos/<slug>/01..05.<ext> when present
-(function(){
-  const MAX_PHOTOS=5;
-  const EXTS=['jpg','jpeg','png','webp','JPG','JPEG'];
-  const probe=(src)=>new Promise(res=>{
-    const i=new Image();i.onload=()=>res(src);i.onerror=()=>res(null);i.src=src;
+// click a thumbnail to swap it into the hero
+document.querySelectorAll('.poster').forEach(poster=>{
+  const heroImg=poster.querySelector('.hero img');
+  if(!heroImg)return;
+  poster.querySelectorAll('.thumb').forEach(thumb=>{
+    thumb.addEventListener('click',()=>{
+      const tImg=thumb.querySelector('img');
+      if(!tImg)return;
+      heroImg.src=tImg.src;
+      heroImg.alt=tImg.alt;
+      poster.querySelectorAll('.thumb').forEach(t=>t.classList.remove('active'));
+      thumb.classList.add('active');
+    });
   });
-  const findOne=async(slug,n)=>{
-    for(const ext of EXTS){
-      const src=`photos/${slug}/${n}.${ext}`;
-      const ok=await probe(src);
-      if(ok)return ok;
-    }
-    return null;
-  };
-  document.querySelectorAll('.poster[data-slug]').forEach(async poster=>{
-    const slug=poster.dataset.slug;
-    const slots=Array.from({length:MAX_PHOTOS},(_,i)=>String(i+1).padStart(2,'0'));
-    const found=(await Promise.all(slots.map(n=>findOne(slug,n)))).filter(Boolean);
-    if(found.length===0)return;
-    const frames=poster.querySelector('.frames');
-    frames.innerHTML=found.map((src,i)=>
-      `<div class="frame"><img loading="lazy" alt="${slug.replace(/-/g,' ')} photo ${i+1}" src="${src}"></div>`
-    ).join('');
-    frames.hidden=false;
-    poster.classList.add('has-photos-'+found.length);
-    const fb=poster.querySelector('.poster-fallback');
-    if(fb)fb.remove();
-    const credit=poster.querySelector('.credit');
-    if(credit)credit.remove();
-  });
-})();
+});
+
+// lazy-load thumbs (hero loads eagerly)
+document.querySelectorAll('.poster .thumb img').forEach(img=>{img.loading='lazy';});
 </script>
 
 </body>
