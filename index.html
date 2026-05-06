@@ -255,14 +255,39 @@ section.dest{
   background:var(--sand);
   border:1px solid var(--line);
 }
-.poster img{
+.poster > img.poster-fallback{
   width:100%;
   height:100%;
   object-fit:cover;
   display:block;
   transition:transform 1.4s cubic-bezier(.2,.8,.2,1);
 }
-.poster:hover img{transform:scale(1.03)}
+.poster:hover > img.poster-fallback{transform:scale(1.03)}
+
+/* photo gallery — appears when photos/<slug>/ contains JPGs */
+.poster .frames{
+  position:absolute;
+  inset:0;
+  display:grid;
+  gap:6px;
+  background:var(--warm-white);
+}
+.poster.has-photos-1 .frames{grid-template-columns:1fr;grid-template-rows:1fr}
+.poster.has-photos-2 .frames{grid-template-columns:1fr 1fr;grid-template-rows:1fr}
+.poster.has-photos-3 .frames{grid-template-columns:repeat(3,1fr);grid-template-rows:1fr}
+.poster.has-photos-4 .frames{grid-template-columns:repeat(3,1fr);grid-template-rows:3fr 1fr}
+.poster.has-photos-4 .frames .frame:nth-child(1){grid-column:1/4}
+.poster.has-photos-5 .frames{grid-template-columns:repeat(4,1fr);grid-template-rows:3fr 1fr}
+.poster.has-photos-5 .frames .frame:nth-child(1){grid-column:1/5}
+.poster .frame{position:relative;overflow:hidden;background:var(--sand)}
+.poster .frame img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform 1.4s cubic-bezier(.2,.8,.2,1);
+}
+.poster .frame:hover img{transform:scale(1.04)}
 .poster .tag{
   position:absolute;
   top:20px;
@@ -598,9 +623,10 @@ footer .bottom .klk{
 
   <!-- TEN THOUSAND WAVES -->
   <article class="property">
-    <div class="poster">
+    <div class="poster" data-slug="ten-thousand-waves">
       <span class="tag">Property A</span>
-      <img alt="Editorial illustration of Ten Thousand Waves: onsen ripples beneath the moon, framed by piñon pine" src="art/ten-thousand-waves.svg">
+      <img class="poster-fallback" alt="Editorial illustration of Ten Thousand Waves: onsen ripples beneath the moon, framed by piñon pine" src="art/ten-thousand-waves.svg">
+      <div class="frames" hidden></div>
       <span class="credit">Editorial Plate</span>
     </div>
     <div class="content">
@@ -634,9 +660,10 @@ footer .bottom .klk{
 
   <!-- FOUR SEASONS -->
   <article class="property">
-    <div class="poster">
+    <div class="poster" data-slug="four-seasons-rancho">
       <span class="tag">Property B</span>
-      <img alt="Editorial illustration of Four Seasons Rancho Encantado: high-desert mesa at dusk with adobe casita and piñon trees" src="art/four-seasons-rancho.svg">
+      <img class="poster-fallback" alt="Editorial illustration of Four Seasons Rancho Encantado: high-desert mesa at dusk with adobe casita and piñon trees" src="art/four-seasons-rancho.svg">
+      <div class="frames" hidden></div>
       <span class="credit">Editorial Plate</span>
     </div>
     <div class="content">
@@ -670,9 +697,10 @@ footer .bottom .klk{
 
   <!-- INN OF THE FIVE GRACES -->
   <article class="property">
-    <div class="poster">
+    <div class="poster" data-slug="inn-five-graces">
       <span class="tag">Property C</span>
-      <img alt="Editorial illustration of Inn of the Five Graces: adobe archway, hanging lantern, mosaic tile band" src="art/inn-five-graces.svg">
+      <img class="poster-fallback" alt="Editorial illustration of Inn of the Five Graces: adobe archway, hanging lantern, mosaic tile band" src="art/inn-five-graces.svg">
+      <div class="frames" hidden></div>
       <span class="credit">Editorial Plate</span>
     </div>
     <div class="content">
@@ -793,9 +821,10 @@ footer .bottom .klk{
 
   <!-- WALDORF ASTORIA PARK CITY -->
   <article class="property">
-    <div class="poster">
+    <div class="poster" data-slug="waldorf-park-city">
       <span class="tag">Property A</span>
-      <img alt="Editorial illustration of Waldorf Astoria Park City: layered Wasatch peaks at first light, snow-capped, lit lodge windows" src="art/waldorf-park-city.svg">
+      <img class="poster-fallback" alt="Editorial illustration of Waldorf Astoria Park City: layered Wasatch peaks at first light, snow-capped, lit lodge windows" src="art/waldorf-park-city.svg">
+      <div class="frames" hidden></div>
       <span class="credit">Editorial Plate</span>
     </div>
     <div class="content">
@@ -916,9 +945,10 @@ footer .bottom .klk{
 
   <!-- WYNN -->
   <article class="property">
-    <div class="poster">
+    <div class="poster" data-slug="wynn-las-vegas">
       <span class="tag">Property A</span>
-      <img alt="Editorial illustration of Wynn Las Vegas: golden tower against a dusk sky, lit windows, distant Strip" src="art/wynn-las-vegas.svg">
+      <img class="poster-fallback" alt="Editorial illustration of Wynn Las Vegas: golden tower against a dusk sky, lit windows, distant Strip" src="art/wynn-las-vegas.svg">
+      <div class="frames" hidden></div>
       <span class="credit">Editorial Plate</span>
     </div>
     <div class="content">
@@ -952,9 +982,10 @@ footer .bottom .klk{
 
   <!-- WALDORF LAS VEGAS -->
   <article class="property">
-    <div class="poster">
+    <div class="poster" data-slug="waldorf-las-vegas">
       <span class="tag">Property B</span>
-      <img alt="Editorial illustration of Waldorf Astoria Las Vegas: panoramic Strip skyline at dusk seen from a high-rise suite window" src="art/waldorf-las-vegas.svg">
+      <img class="poster-fallback" alt="Editorial illustration of Waldorf Astoria Las Vegas: panoramic Strip skyline at dusk seen from a high-rise suite window" src="art/waldorf-las-vegas.svg">
+      <div class="frames" hidden></div>
       <span class="credit">Editorial Plate</span>
     </div>
     <div class="content">
@@ -1070,6 +1101,38 @@ document.querySelectorAll('.property,.saturday,.logistics,.dest-head').forEach(e
   observer.observe(el);
 });
 
+// photo discovery — replaces SVG poster with photos/<slug>/01..05.<ext> when present
+(function(){
+  const MAX_PHOTOS=5;
+  const EXTS=['jpg','jpeg','png','webp','JPG','JPEG'];
+  const probe=(src)=>new Promise(res=>{
+    const i=new Image();i.onload=()=>res(src);i.onerror=()=>res(null);i.src=src;
+  });
+  const findOne=async(slug,n)=>{
+    for(const ext of EXTS){
+      const src=`photos/${slug}/${n}.${ext}`;
+      const ok=await probe(src);
+      if(ok)return ok;
+    }
+    return null;
+  };
+  document.querySelectorAll('.poster[data-slug]').forEach(async poster=>{
+    const slug=poster.dataset.slug;
+    const slots=Array.from({length:MAX_PHOTOS},(_,i)=>String(i+1).padStart(2,'0'));
+    const found=(await Promise.all(slots.map(n=>findOne(slug,n)))).filter(Boolean);
+    if(found.length===0)return;
+    const frames=poster.querySelector('.frames');
+    frames.innerHTML=found.map((src,i)=>
+      `<div class="frame"><img loading="lazy" alt="${slug.replace(/-/g,' ')} photo ${i+1}" src="${src}"></div>`
+    ).join('');
+    frames.hidden=false;
+    poster.classList.add('has-photos-'+found.length);
+    const fb=poster.querySelector('.poster-fallback');
+    if(fb)fb.remove();
+    const credit=poster.querySelector('.credit');
+    if(credit)credit.remove();
+  });
+})();
 </script>
 
 </body>
