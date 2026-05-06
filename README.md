@@ -13,6 +13,7 @@ photos/
 ├── ten-thousand-waves/        Property A · Santa Fe
 ├── four-seasons-rancho/       Property B · Santa Fe
 ├── inn-five-graces/           Property C · Santa Fe
+├── bishops-lodge/             Property D · Santa Fe
 ├── waldorf-park-city/         Property A · Park City
 ├── wynn-las-vegas/            Property A · Las Vegas
 └── waldorf-las-vegas/         Property B · Las Vegas
@@ -53,6 +54,7 @@ git push
 | `ten-thousand-waves` | Ten Thousand Waves, Santa Fe |
 | `four-seasons-rancho` | Four Seasons Rancho Encantado, Santa Fe |
 | `inn-five-graces` | Inn of the Five Graces, Santa Fe |
+| `bishops-lodge` | Bishop's Lodge (Auberge), Santa Fe |
 | `waldorf-park-city` | Waldorf Astoria Park City |
 | `wynn-las-vegas` | Wynn Las Vegas |
 | `waldorf-las-vegas` | Waldorf Astoria Las Vegas |
